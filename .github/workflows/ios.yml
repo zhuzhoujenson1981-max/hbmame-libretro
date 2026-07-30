@@ -1,0 +1,75 @@
+name: Build iOS HBMAME + MAME Arcade Dual Core
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  build-ios:
+    runs-on: macos-latest
+
+    steps:
+      # 1. 检出仓库及其子模块
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # 2. 执行双合一纯街机核心编译
+      - name: Build Libretro Core
+        run: |
+          make -f Makefile.libretro \
+            platform=ios-arm64 \
+            TARGET=hbmame \
+            SUBTARGET=hbmame \
+            ARCADE=1 \
+            NOWERROR=1 \
+            -j$(sysctl -n hw.ncpu)
+
+      # 3. 打包为符合 iOS 规范的 Framework
+      - name: Package into iOS Framework
+        run: |
+          mkdir -p hbmame.libretro.framework
+
+          # 自动定位编译出来的 .dylib 核心文件
+          DYLIB_PATH=$(find . -name "*hbmame*libretro*.dylib" | head -n 1)
+          if [ -z "$DYLIB_PATH" ]; then
+            DYLIB_PATH=$(find build/ -name "*.dylib" | head -n 1)
+          fi
+
+          echo "Found compiled binary at: $DYLIB_PATH"
+
+          # 复制核心并将二进制重命名为无后缀格式（iOS Framework 强制要求）
+          cp "$DYLIB_PATH" hbmame.libretro.framework/hbmame.libretro
+
+          # 生成 Info.plist 元数据文件
+          cat << 'EOF' > hbmame.libretro.framework/Info.plist
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+              <key>CFBundleExecutable</key>
+              <string>hbmame.libretro</string>
+              <key>CFBundleIdentifier</key>
+              <string>com.libretro.hbmame</string>
+              <key>CFBundleName</key>
+              <string>hbmame.libretro</string>
+              <key>CFBundlePackageType</key>
+              <string>FWK </string>
+              <key>CFBundleShortVersionString</key>
+              <string>1.0</string>
+              <key>CFBundleVersion</key>
+              <string>1</string>
+          </dict>
+          EOF
+
+          # 压缩打包
+          zip -r hbmame.libretro.framework.zip hbmame.libretro.framework
+
+      # 4. 上传构建产物
+      - name: Upload iOS Framework Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: hbmame_mame_arcade_framework
+          path: hbmame.libretro.framework.zip
