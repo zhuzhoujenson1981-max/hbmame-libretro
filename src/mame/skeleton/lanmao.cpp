@@ -231,8 +231,8 @@ private:
 };
 void panda2_state::machine_start()
 {
-        m_digits.resolve();
-	m_leds.resolve();
+        // m_digits.resolve();
+	// m_leds.resolve();
 
 	save_item(NAME(m_kbd_line));
 	save_item(NAME(m_p1_out));
@@ -240,8 +240,8 @@ void panda2_state::machine_start()
 
 void pkzw_state::machine_start()
 {
-	m_digits.resolve();
-	m_leds.resolve();
+	// m_digits.resolve();
+	// m_leds.resolve();
 
 	save_item(NAME(m_selected_7seg_module));
 	save_item(NAME(m_p1_out));
