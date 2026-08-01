@@ -8,7 +8,6 @@ on:
 jobs:
   build-ios:
     runs-on: macos-latest
-
     steps:
       # 1. 检出仓库
       - name: Checkout Repository
@@ -18,33 +17,30 @@ jobs:
 
       # 2. 编译 iOS HBMAME 核心（加入针对 iOS Clang 内存和 CPU 解释器的修复参数）
       - name: Build Libretro Core for iOS
-  run: |
-    make -f Makefile.libretro \
-      platform=ios-arm64 \
-      TARGET=hbmame \
-      SUBTARGET=hbmame \
-      NOWERROR=1 \
-      FORCE_DRC=0 \
-      PTR64=1 \
-      VERBOSE=1 \
-      AR="llvm-ar" \
-      ARFLAGS="-cs" \
-      EXTRA_CFLAGS="-fno-strict-aliasing -funsigned-char -Wno-error" \
-      -j$(sysctl -n hw.ncpu)
+        run: |
+          make -f Makefile.libretro \
+            platform=ios-arm64 \
+            TARGET=hbmame \
+            SUBTARGET=hbmame \
+            NOWERROR=1 \
+            FORCE_DRC=0 \
+            PTR64=1 \
+            VERBOSE=1 \
+            AR="llvm-ar" \
+            ARFLAGS="-cs" \
+            EXTRA_CFLAGS="-fno-strict-aliasing -funsigned-char -Wno-error" \
+            -j$(sysctl -n hw.ncpu)
 
       # 3. 打包为 iOS Framework
       - name: Package into iOS Framework
         run: |
           mkdir -p hbmame.libretro.framework
-
           DYLIB_PATH=$(find . -name "*hbmame*libretro*.dylib" | head -n 1)
           if [ -z "$DYLIB_PATH" ]; then
             DYLIB_PATH=$(find build/ -name "*.dylib" | head -n 1)
           fi
-
           echo "Compiled Binary: $DYLIB_PATH"
           cp "$DYLIB_PATH" hbmame.libretro.framework/hbmame.libretro
-
           cat << 'EOF' > hbmame.libretro.framework/Info.plist
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -52,8 +48,7 @@ jobs:
           <dict>
               <key>CFBundleExecutable</key>
               <string>hbmame.libretro</string>
-              <key>CFBundleIdentifier</key>
-              <string>com.libretro.hbmame</string>
+              <key>CFBundleIdentifier</key>              <string>com.libretro.hbmame</string>
               <key>CFBundleName</key>
               <string>hbmame.libretro</string>
               <key>CFBundlePackageType</key>
@@ -64,7 +59,6 @@ jobs:
               <string>1</string>
           </dict>
           EOF
-
           zip -r hbmame.libretro.framework.zip hbmame.libretro.framework
 
       # 4. 上传产物
