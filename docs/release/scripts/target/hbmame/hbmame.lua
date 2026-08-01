@@ -1158,6 +1158,7 @@ files {
 	MAME_DIR .. "src/hbmame/drivers/mcatadv.cpp",
 	MAME_DIR .. "src/mame/video/mcatadv.cpp",
 	MAME_DIR .. "src/mame/drivers/skimaxx.cpp",
+	MAME_DIR .. "src/mame/skeleton/lanmao.cpp",	
 	MAME_DIR .. "src/hbmame/drivers/timelimit.cpp",
 	MAME_DIR .. "src/mame/video/timelimt.cpp",
 	MAME_DIR .. "src/hbmame/drivers/vamphalf.cpp",
