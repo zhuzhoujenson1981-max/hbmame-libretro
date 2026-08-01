@@ -1023,6 +1023,7 @@ files {
 	MAME_DIR .. "src/devices/machine/segacrpt_device.cpp",
 	MAME_DIR .. "src/devices/machine/segacrp2_device.cpp",
 	MAME_DIR .. "src/devices/machine/z80dma.cpp",
+	MAME_DIR .. "src/devices/machine/i8279.cpp",
 	MAME_DIR .. "src/devices/sound/astrocde.cpp",
 	MAME_DIR .. "src/devices/sound/ay8910.cpp",
 	MAME_DIR .. "src/devices/sound/beep.cpp",
