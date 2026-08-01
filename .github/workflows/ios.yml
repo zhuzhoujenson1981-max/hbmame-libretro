@@ -26,7 +26,7 @@ jobs:
             FORCE_DRC=0 \
             PTR64=1 \
             VERBOSE=1 \
-            AR="llvm-ar" \
+            AR="xcrun llvm-ar" \
             ARFLAGS="-cs" \
             EXTRA_CFLAGS="-fno-strict-aliasing -funsigned-char -Wno-error" \
             -j$(sysctl -n hw.ncpu)
