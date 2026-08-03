@@ -222,8 +222,6 @@ void osd_common_t::register_options()
 #else
 	REGISTER_MODULE(m_mod_man, FONT_SDL);
 #endif
-#else
-    REGISTER_MODULE(m_mod_man, FONT_SDL);
 #endif
  	REGISTER_MODULE(m_mod_man, FONT_NONE);
 
