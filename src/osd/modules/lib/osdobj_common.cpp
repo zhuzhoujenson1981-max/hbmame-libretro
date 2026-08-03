@@ -225,7 +225,7 @@ void osd_common_t::register_options()
 #else
     REGISTER_MODULE(m_mod_man, FONT_SDL);
 #endif
- //	REGISTER_MODULE(m_mod_man, FONT_NONE);
+ 	REGISTER_MODULE(m_mod_man, FONT_NONE);
 
 #ifndef __LIBRETRO__
 #if defined(SDLMAME_EMSCRIPTEN)
