@@ -535,18 +535,10 @@ render_font::render_font(render_manager &manager, const char *filename)
 		return;
 	}
 
-	// try external BDF font first
-if (load_cached_bdf("ui.bdf"))
-{
-	render_font_command_glyph();
-	return;
-}
-
-// fallback to compiled in font
+	// load the compiled in data instead
 util::random_read::ptr ramfile = util::ram_read(font_uismall, sizeof(font_uismall));
 if (ramfile)
 	load_cached(*ramfile, 0, 0);
-
 render_font_command_glyph();
 }
 
