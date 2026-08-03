@@ -65,6 +65,7 @@ function osdmodulesbuild()
 		MAME_DIR .. "src/osd/modules/diagnostics/diagnostics_module.h",
 		MAME_DIR .. "src/osd/modules/diagnostics/none.cpp",
 		MAME_DIR .. "src/osd/modules/font/font_module.h",
+		MAME_DIR .. "src/osd/modules/font/font_sdl.cpp",
 		MAME_DIR .. "src/osd/modules/font/font_none.cpp",
 		MAME_DIR .. "src/osd/modules/input/assignmenthelper.cpp",
 		MAME_DIR .. "src/osd/modules/input/assignmenthelper.h",
